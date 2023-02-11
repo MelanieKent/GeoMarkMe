@@ -24,7 +24,7 @@ const App = () => {
             draggable
             coordinate={{
               latitude: 37.78825,
-              longitude: -122.4324,
+              longitude: -122.4325,
             }}
             onDragEnd={
               (e) => alert(JSON.stringify(e.nativeEvent.coordinate))
