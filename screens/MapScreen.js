@@ -10,11 +10,11 @@ import { Constants, Location, Permissions } from 'expo';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [location, setLocation] = React.useState(null);
+  const [errorMsg, setErrorMsg] = React.useState(null);
   const[pin, setPin] = React.useState({
-    latitude: 0,
-    longitude: 0,
+    latitude: 49.26140,
+    longitude: -123.24858,
   });
 
   React.useEffect(() => {
