@@ -4,8 +4,8 @@ import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import MapView, { Marker } from 'react-native-maps';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Constants, Location, Permissions } from 'expo';
-// import Location from 'expo-location';
+
+import * as Location from 'expo-location';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,21 +19,25 @@ const App = () => {
 
   React.useEffect(() => {
     (async () => {
-      
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied');
         return;
       }
+    
+      try {
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
+    
+        setPin({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        });
+      } catch (error) {
+        setErrorMsg('Error getting current location');
+      }
 
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
 
-      setPin({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      });
-      
     })();
   }, []);
 
@@ -49,6 +53,12 @@ const App = () => {
             longitudeDelta: 0.004,
           }}
           showsUserLocation={true}
+          region={{
+            latitude: pin.latitude,
+            longitude: pin.longitude,
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.004,
+          }}
           
           customMapStyle={mapStyle}>
           <Marker
